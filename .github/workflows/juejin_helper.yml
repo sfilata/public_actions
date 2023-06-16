@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  send:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,14 +18,9 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - name: Dependency Installing
-        run: npm ci 
-  send:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+          cache: 'npm'
+      - run: npm ci
+        
       - name: Run Project
         env:
           COOKIE: ${{ secrets.COOKIE }}
