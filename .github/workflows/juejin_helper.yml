@@ -17,16 +17,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
-
+          registry-url: https://npm.pkg.github.com/
+      - name: Dependency Installing
+        run: npm ci 
   send:
     runs-on: ubuntu-latest
+    needs: [build]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://npm.pkg.github.com/
       - name: Run Project
         env:
           COOKIE: ${{ secrets.COOKIE }}
@@ -37,4 +34,4 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           WORKWX_WEBHOOK: ${{ secrets.WORKWX_WEBHOOK }}
-        run: npm ci && node index.js
+        run: node index.js
